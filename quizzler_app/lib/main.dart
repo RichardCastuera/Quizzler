@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-//TODO: Step 2 - Import the rFlutter_Alert package here.
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'quiz_brain.dart';
 
 QuizBrain quizBrain = QuizBrain();
@@ -38,19 +38,29 @@ class _QuizPageState extends State<QuizPage> {
   void checkAnswer(bool userPickedAnswer) {
     bool correctAnswer = quizBrain.getCorrectAnswer();
     setState(() {
-      (correctAnswer == userPickedAnswer)
-          ? scoreKeeper.add(
-              Icon(
-                Icons.check,
-                color: Colors.green,
-              ),
-            )
-          : scoreKeeper.add(
-              Icon(
-                Icons.close,
-                color: Colors.red,
-              ),
-            );
+      if (quizBrain.isFinished() == true) {
+        Alert(
+                context: context,
+                title: "Congrats!",
+                desc: "You've successfully made it!.")
+            .show();
+        quizBrain.reset();
+        scoreKeeper.clear();
+      } else {
+        (correctAnswer == userPickedAnswer)
+            ? scoreKeeper.add(
+                Icon(
+                  Icons.check,
+                  color: Colors.green,
+                ),
+              )
+            : scoreKeeper.add(
+                Icon(
+                  Icons.close,
+                  color: Colors.red,
+                ),
+              );
+      }
       quizBrain.nextQuestion();
     });
   }
