@@ -18,10 +18,7 @@ class Quizzler extends StatelessWidget {
       home: Scaffold(
         backgroundColor: Colors.grey.shade900,
         body: const SafeArea(
-          child: Padding(
-            padding: EdgeInsetsDirectional.symmetric(horizontal: 20.0),
-            child: QuizPage(),
-          ),
+          child: QuizPage(),
         ),
       ),
     );
@@ -37,6 +34,26 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
+
+  void checkAnswer(bool userPickedAnswer) {
+    bool correctAnswer = quizBrain.getCorrectAnswer();
+    setState(() {
+      (correctAnswer == userPickedAnswer)
+          ? scoreKeeper.add(
+              Icon(
+                Icons.check,
+                color: Colors.green,
+              ),
+            )
+          : scoreKeeper.add(
+              Icon(
+                Icons.close,
+                color: Colors.red,
+              ),
+            );
+      quizBrain.nextQuestion();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,13 +87,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked true
-                bool correctAnswer = quizBrain.getCorrectAnswer();
-                (correctAnswer == true)
-                    ? print('User got it right')
-                    : print('User got it wrong');
-                setState(() {
-                  quizBrain.nextQuestion();
-                });
+                checkAnswer(true);
               },
               child: const Text(
                 'True',
@@ -98,13 +109,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked false
-                bool correctAnswer = quizBrain.getCorrectAnswer();
-                (correctAnswer == false)
-                    ? print('User got it right')
-                    : print('User got it wrong');
-                setState(() {
-                  quizBrain.nextQuestion();
-                });
+                checkAnswer(false);
               },
               child: const Text(
                 'False',
@@ -116,11 +121,8 @@ class _QuizPageState extends State<QuizPage> {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: scoreKeeper,
-          ),
+        Row(
+          children: scoreKeeper,
         )
       ],
     );
