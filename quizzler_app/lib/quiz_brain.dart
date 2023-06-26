@@ -38,11 +38,11 @@ class QuizBrain {
   }
 
   String getQuestionText() {
-    return _questionBank[_questionNumber].questionText;
+    return _questionBank[_questionNumber].questionText!;
   }
 
   bool getCorrectAnswer() {
-    return _questionBank[_questionNumber].questionAnswer;
+    return _questionBank[_questionNumber].questionAnswer!;
   }
 
   //TODO: Step 3 Part A - Create a method called isFinished() here that checks to see if we have reached the last question. It should return (have an output) true if we've reached the last question and it should return false if we're not there yet.
